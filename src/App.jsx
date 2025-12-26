@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Phone, MapPin, ChevronRight, ChevronLeft, ChevronDown, Star, Shield, CheckCircle, AlertTriangle, Menu, X, Globe, DollarSign, Play, Zap, Navigation, ArrowRight, MessageCircle, CreditCard, Bitcoin, Briefcase, Flame, ShieldCheck, Clock, CheckSquare, Car, FileText, Lock, Users, Award, Map } from 'lucide-react';
 
 const styles = `
@@ -1350,7 +1350,7 @@ const Navbar = ({ lang, setLang, toggleModal, t }) => {
   );
 };
 
-const Modal = ({ isOpen, close, lang, selectedCar, carList }) => {
+const Modal = React.memo(({ isOpen, close, lang, selectedCar, carList }) => {
   const [formData, setFormData] = useState({ name: '', phone: '', date: '', fromTo: '', car: selectedCar || '' });
   const [isSent, setIsSent] = useState(false);
   const t = content[lang].form;
@@ -1375,10 +1375,10 @@ const Modal = ({ isOpen, close, lang, selectedCar, carList }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={close}></div>
-      <div className="bg-[#0f0f0f] border border-yellow-500/30 w-full max-w-lg rounded-3xl p-4 md:p-8 relative shadow-[0_0_100px_rgba(234,179,8,0.15)] overflow-hidden animate-in fade-in zoom-in-95">
+      <div className="absolute inset-0 bg-black/95" onClick={close}></div>
+      <div className="bg-[#0f0f0f] border border-yellow-500/30 w-full max-w-lg rounded-3xl p-4 md:p-8 relative shadow-[0_0_100px_rgba(234,179,8,0.15)] overflow-hidden transform transition-all duration-300 scale-100 opacity-100">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
-        <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-yellow-500/10 rounded-full opacity-50"></div>
         
         <button 
           onClick={(e) => {
@@ -1455,7 +1455,7 @@ const Modal = ({ isOpen, close, lang, selectedCar, carList }) => {
       </div>
     </div>
   );
-};
+});
 
 const VideoModal = ({ isOpen, close, videoUrl }) => {
   if (!isOpen) return null;
@@ -1536,12 +1536,12 @@ const App = () => {
     setInfoModal({ isOpen: true, type });
   };
 
-  const getTranslatedCars = () => {
+  const getTranslatedCars = useMemo(() => {
     return CARS.map(car => ({
       ...car,
       ...t.fleet.cars[car.key]
     }));
-  };
+  }, [t.fleet.cars]);
 
   // Загрузка списка существующих видео
   useEffect(() => {
@@ -1612,7 +1612,7 @@ const App = () => {
         <div className="fixed inset-0 z-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none mix-blend-screen"></div>
 
         <Navbar lang={lang} setLang={setLang} toggleModal={() => openBooking()} t={t.nav} />
-        <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)} lang={lang} selectedCar={selectedCarForModal} carList={getTranslatedCars()} />
+        <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)} lang={lang} selectedCar={selectedCarForModal} carList={getTranslatedCars} />
         <VideoModal isOpen={videoModal.isOpen} close={() => setVideoModal({ isOpen: false, url: null })} videoUrl={videoModal.url} />
         
         <InfoModal 
@@ -1724,7 +1724,7 @@ const App = () => {
               </div>
             </div>
             
-            <CarCarousel cars={getTranslatedCars()} t={t.fleet} openBooking={openBooking} />
+            <CarCarousel cars={getTranslatedCars} t={t.fleet} openBooking={openBooking} />
           </section>
 
           <section className="py-20 relative border-t border-white/5">
