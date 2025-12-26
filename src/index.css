@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scrollbar hide */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .min-h-screen {
+    min-height: 80vh;
+  }
+  
+  .pt-20 {
+    padding-top: 2rem;
+  }
+  
+  .py-32 {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+  
+  .mt-4 {
+    margin-top: 3rem;
+  }
+  
+  .py-20 {
+    padding-top: 5rem;
+    padding-bottom: 0rem;
+  }
+  
+  .mb-20 {
+    margin-bottom: 1rem;
+  }
+  
+  .py-24 {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+  
+  .mb-16 {
+    margin-bottom: 2rem;
+  }
+  
+  .py-40 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
