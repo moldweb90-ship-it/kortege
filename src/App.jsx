@@ -1376,11 +1376,20 @@ const Modal = ({ isOpen, close, lang, selectedCar, carList }) => {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/90 backdrop-blur-md" onClick={close}></div>
-      <div className="bg-[#0f0f0f] border border-yellow-500/30 w-full max-w-lg rounded-3xl p-8 relative shadow-[0_0_100px_rgba(234,179,8,0.15)] overflow-hidden animate-in fade-in zoom-in-95">
+      <div className="bg-[#0f0f0f] border border-yellow-500/30 w-full max-w-lg rounded-3xl p-4 md:p-8 relative shadow-[0_0_100px_rgba(234,179,8,0.15)] overflow-hidden animate-in fade-in zoom-in-95">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
         <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl"></div>
         
-        <button onClick={close} className="absolute top-6 right-6 text-gray-500 hover:text-white transition-colors bg-white/5 p-2 rounded-full z-20"><X size={20}/></button>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            close();
+          }} 
+          className="absolute top-3 right-3 md:top-6 md:right-6 text-gray-500 hover:text-white active:text-white transition-colors bg-white/10 hover:bg-white/20 active:bg-white/30 p-3 md:p-2 rounded-full z-50 touch-manipulation"
+          style={{ minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <X size={24} className="md:w-5 md:h-5" strokeWidth={2.5}/>
+        </button>
         
         {isSent ? (
           <div className="text-center py-12 flex flex-col items-center">
@@ -1392,8 +1401,8 @@ const Modal = ({ isOpen, close, lang, selectedCar, carList }) => {
           </div>
         ) : (
           <>
-            <h2 className="text-3xl font-black text-white mb-2 uppercase italic tracking-wide">{t.title}</h2>
-            <p className="text-gray-500 mb-8 text-sm">Заполните данные для начала миссии.</p>
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-2 uppercase italic tracking-wide pt-2 md:pt-0 pr-12 md:pr-0">{t.title}</h2>
+            <p className="text-gray-500 mb-6 md:mb-8 text-sm">Заполните данные для начала миссии.</p>
             
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 relative z-10">
               <div className="group">
