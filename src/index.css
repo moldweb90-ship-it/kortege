@@ -53,4 +53,21 @@
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
+  
+  /* Отключаем тяжелые эффекты на мобильных для производительности */
+  .backdrop-blur-md,
+  .backdrop-blur-xl,
+  .backdrop-blur-sm {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  
+  .blur-\[1px\] {
+    filter: none !important;
+  }
+  
+  .blur-\[120px\],
+  .blur-\[150px\] {
+    filter: blur(40px) !important;
+  }
 }

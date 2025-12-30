@@ -928,11 +928,11 @@ const CarCarousel = ({ cars, t, openBooking }) => {
                 transform: isHidden ? 'scale(0)' : undefined, 
               }}
             >
-              <div className={`relative bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 ${isActive ? 'scale-100 opacity-100 z-20 shadow-[0_0_50px_rgba(234,179,8,0.2)] border-yellow-500/50' : isPrev ? '-translate-x-full md:-translate-x-[60%] scale-90 opacity-40 blur-[1px]' : isNext ? 'translate-x-full md:translate-x-[60%] scale-90 opacity-40 blur-[1px]' : 'opacity-0 scale-0'}`}>
+              <div className={`relative bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 ${isActive ? 'scale-100 opacity-100 z-20 shadow-[0_0_50px_rgba(234,179,8,0.2)] border-yellow-500/50' : isPrev ? '-translate-x-full md:-translate-x-[60%] scale-90 opacity-40 md:blur-[1px]' : isNext ? 'translate-x-full md:translate-x-[60%] scale-90 opacity-40 md:blur-[1px]' : 'opacity-0 scale-0'}`}>
                 
                 <div className="h-64 md:h-80 relative overflow-hidden">
                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10"></div>
-                   <img src={car.image} alt={car.name} className="w-full h-full object-cover" />
+                   <img src={car.image} alt={car.name} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                    <div className="absolute top-4 right-4 z-20 bg-yellow-500 text-black px-3 py-1 text-xs font-black uppercase rounded tracking-widest shadow-lg">
                      {car.type}
                    </div>
@@ -1609,7 +1609,7 @@ const App = () => {
         
         <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a1a] via-[#050505] to-black"></div>
         <div className="bg-grain"></div>
-        <div className="fixed inset-0 z-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none mix-blend-screen"></div>
+        <div className="fixed inset-0 z-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03)_0%,transparent_50%)] opacity-20 pointer-events-none"></div>
 
         <Navbar lang={lang} setLang={setLang} toggleModal={() => openBooking()} t={t.nav} />
         <Modal isOpen={isModalOpen} close={() => setIsModalOpen(false)} lang={lang} selectedCar={selectedCarForModal} carList={getTranslatedCars} />
@@ -1841,6 +1841,13 @@ const App = () => {
                    </button>
                 </div>
               </div>
+            </div>
+          </section>
+
+           <section className="py-32 relative overflow-hidden">
+            <div className="container mx-auto px-4">
+              <h2 className="text-4xl md:text-6xl font-black text-white uppercase text-center mb-20">{t.reviews.title}</h2>
+              <VideoCarousel videos={availableVideos} />
             </div>
           </section>
 
