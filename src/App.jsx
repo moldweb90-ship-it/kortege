@@ -1647,13 +1647,6 @@ const App = () => {
               <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
                 {t.hero.desc}
               </p>
-              
-              <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                <button onClick={() => openBooking()} className="group relative px-10 py-5 bg-yellow-500 text-black font-black text-lg uppercase tracking-wider overflow-hidden rounded-xl transition-all hover:scale-105 shadow-[0_0_40px_rgba(234,179,8,0.4)]">
-                  <div className="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  <span className="relative flex items-center gap-3">{t.hero.cta} <ChevronRight strokeWidth={4} /></span>
-                </button>
-              </div>
             </div>
 
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
