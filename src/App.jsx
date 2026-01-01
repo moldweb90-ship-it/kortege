@@ -804,7 +804,7 @@ const FAQ = ({ t }) => {
 
 const FloatingContacts = ({ openBooking }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const phoneNumber = "380756953174"; 
+  const phoneNumber = "37379975501"; 
 
   return (
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-4">
@@ -825,6 +825,14 @@ const FloatingContacts = ({ openBooking }) => {
              className="flex items-center gap-3 bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg font-bold hover:scale-110 transition-transform"
            >
              <span className="text-sm">WhatsApp</span> <Phone size={20} />
+           </a>
+           <a 
+             href={`viber://chat?number=+${phoneNumber}`} 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="flex items-center gap-3 bg-[#665CAC] text-white px-4 py-3 rounded-full shadow-lg font-bold hover:scale-110 transition-transform"
+           >
+             <span className="text-sm">Viber</span> <MessageCircle size={20} />
            </a>
         </div>
       )}
@@ -1549,10 +1557,13 @@ const App = () => {
                     {t.contact.btn}
                  </button>
                  <div className="flex gap-4">
-                    <a href="https://t.me/+380756953174" target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-[#0088cc] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
+                    <a href="https://t.me/+37379975501" target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-[#0088cc] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
                       <Navigation size={28} />
                     </a>
-                    <a href="tel:+380756953174" className="w-16 h-16 bg-[#25D366] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
+                    <a href="viber://chat?number=+37379975501" target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-[#665CAC] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
+                      <MessageCircle size={28} />
+                    </a>
+                    <a href="tel:+37379975501" className="w-16 h-16 bg-[#25D366] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
                       <Phone size={28} />
                     </a>
                  </div>
