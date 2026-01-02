@@ -1092,7 +1092,8 @@ const Modal = React.memo(({ isOpen, close, lang, selectedCar, carList }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Ошибка отправки');
+        const errorMsg = data.error || data.details?.description || 'Ошибка отправки';
+        throw new Error(errorMsg);
       }
 
       setIsSent(true);

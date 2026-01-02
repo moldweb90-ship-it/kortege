@@ -89,7 +89,25 @@ ${fromTo ? escapeHtml(fromTo) : 'Не указан'}
 
     if (!response.ok) {
       console.error('Telegram API error:', data);
-      return res.status(500).json({ error: 'Failed to send message to Telegram', details: data });
+      let errorMessage = 'Failed to send message to Telegram';
+      
+      if (data.description) {
+        errorMessage = data.description;
+      } else if (data.error_code === 400) {
+        errorMessage = 'Неверный запрос. Проверьте настройки бота.';
+      } else if (data.error_code === 401) {
+        errorMessage = 'Неверный токен бота. Проверьте BOT_TOKEN.';
+      } else if (data.error_code === 403) {
+        errorMessage = 'Бот заблокирован пользователем. Проверьте CHAT_ID.';
+      } else if (data.error_code === 400 && data.description?.includes('chat not found')) {
+        errorMessage = 'Чат не найден. Проверьте CHAT_ID и убедитесь, что вы писали боту.';
+      }
+      
+      return res.status(500).json({ 
+        error: errorMessage, 
+        details: data,
+        code: data.error_code 
+      });
     }
 
     return res.status(200).json({ success: true, message: 'Заявка отправлена' });
