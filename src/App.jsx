@@ -1359,8 +1359,7 @@ const App = () => {
               style={{
                 backgroundImage: 'url(/images/bg/kortege_bg.jpg)',
                 backgroundPosition: 'center center',
-                backgroundSize: 'cover',
-                backgroundAttachment: 'fixed'
+                backgroundSize: 'cover'
               }}
             />
             
