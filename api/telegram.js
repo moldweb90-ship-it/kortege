@@ -3,13 +3,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = process.env;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
 
-  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    return res.status(500).json({ error: 'Telegram credentials not configured' });
+  if (!botToken || !chatId) {
+    console.error('Telegram credentials not configured');
+    return res.status(500).json({ error: 'Server configuration error' });
   }
-
-  const chatId = TELEGRAM_CHAT_ID;
 
   try {
     const { name, phone, date, fromTo, car } = req.body;
@@ -73,18 +73,22 @@ ${fromTo ? escapeHtml(fromTo) : 'Не указан'}
 ⏰ <b>Время заявки:</b>
 <i>${requestTime}</i>`;
 
-    const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+    
+    const requestBody = {
+      chat_id: chatId,
+      text: message,
+      parse_mode: 'HTML',
+    };
 
+    console.log('Sending to Telegram:', { chatId, botTokenPrefix: botToken?.substring(0, 10) + '...' });
+    
     const response = await fetch(telegramUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: message,
-        parse_mode: 'HTML',
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     const data = await response.json();
