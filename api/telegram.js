@@ -9,11 +9,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Telegram credentials not configured' });
   }
 
-  // CHAT_ID должен быть числом
-  const chatId = parseInt(TELEGRAM_CHAT_ID, 10);
-  if (isNaN(chatId)) {
-    return res.status(500).json({ error: 'Invalid CHAT_ID format. Must be a number.' });
-  }
+  const chatId = TELEGRAM_CHAT_ID;
 
   try {
     const { name, phone, date, fromTo, car } = req.body;
@@ -77,23 +73,23 @@ ${fromTo ? escapeHtml(fromTo) : 'Не указан'}
 ⏰ <b>Время заявки:</b>
 <i>${requestTime}</i>`;
 
-      const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
     const response = await fetch(telegramUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: 'HTML',
-        }),
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+        parse_mode: 'HTML',
+      }),
     });
 
     const data = await response.json();
 
-    if (!response.ok) {
+    if (!response.ok || !data.ok) {
       console.error('Telegram API error:', data);
       let errorMessage = 'Failed to send message to Telegram';
       
