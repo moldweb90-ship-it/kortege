@@ -3,14 +3,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { BOT_TOKEN } = process.env;
+  const { TELEGRAM_BOT_TOKEN } = process.env;
 
-  if (!BOT_TOKEN) {
-    return res.status(500).json({ error: 'BOT_TOKEN not configured' });
+  if (!TELEGRAM_BOT_TOKEN) {
+    return res.status(500).json({ error: 'TELEGRAM_BOT_TOKEN not configured' });
   }
 
   try {
-    const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`;
+      const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates`;
     
     const response = await fetch(telegramUrl);
     const data = await response.json();

@@ -3,10 +3,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { BOT_TOKEN, CHAT_ID } = process.env;
+  const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = process.env;
 
-  if (!BOT_TOKEN || !CHAT_ID) {
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
     return res.status(500).json({ error: 'Telegram credentials not configured' });
+  }
+
+  // CHAT_ID должен быть числом
+  const chatId = parseInt(TELEGRAM_CHAT_ID, 10);
+  if (isNaN(chatId)) {
+    return res.status(500).json({ error: 'Invalid CHAT_ID format. Must be a number.' });
   }
 
   try {
@@ -71,18 +77,18 @@ ${fromTo ? escapeHtml(fromTo) : 'Не указан'}
 ⏰ <b>Время заявки:</b>
 <i>${requestTime}</i>`;
 
-    const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
     const response = await fetch(telegramUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        chat_id: CHAT_ID,
-        text: message,
-        parse_mode: 'HTML',
-      }),
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'HTML',
+        }),
     });
 
     const data = await response.json();
