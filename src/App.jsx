@@ -1067,22 +1067,46 @@ const Navbar = ({ lang, setLang, toggleModal, t }) => {
 const Modal = React.memo(({ isOpen, close, lang, selectedCar, carList }) => {
   const [formData, setFormData] = useState({ name: '', phone: '', date: '', fromTo: '', car: selectedCar || '' });
   const [isSent, setIsSent] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const t = content[lang].form;
 
   useEffect(() => {
     if(selectedCar) setFormData(prev => ({...prev, car: selectedCar}));
   }, [selectedCar]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setTimeout(() => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/telegram', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Ошибка отправки');
+      }
+
       setIsSent(true);
       setTimeout(() => {
         setIsSent(false);
         close();
         setFormData({ name: '', phone: '', date: '', fromTo: '', car: '' });
       }, 3000);
-    }, 1000);
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError(err.message || 'Произошла ошибка. Попробуйте еще раз.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -1160,8 +1184,19 @@ const Modal = React.memo(({ isOpen, close, lang, selectedCar, carList }) => {
                 onChange={e => setFormData({...formData, fromTo: e.target.value})}
               ></textarea>
              
-              <button type="submit" className="mt-4 bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase p-5 rounded-xl transition-all shadow-[0_0_25px_rgba(234,179,8,0.3)] hover:shadow-[0_0_40px_rgba(234,179,8,0.5)] hover:scale-[1.02] flex justify-center items-center gap-2">
-                {t.submit} <ChevronRight size={20} strokeWidth={3} />
+              {error && (
+                <div className="bg-red-500/20 border border-red-500/50 text-red-400 text-sm p-3 rounded-xl">
+                  {error}
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                disabled={isLoading}
+                className="mt-4 bg-yellow-500 hover:bg-yellow-400 disabled:bg-gray-600 disabled:cursor-not-allowed text-black font-black uppercase p-5 rounded-xl transition-all shadow-[0_0_25px_rgba(234,179,8,0.3)] hover:shadow-[0_0_40px_rgba(234,179,8,0.5)] hover:scale-[1.02] disabled:hover:scale-100 flex justify-center items-center gap-2"
+              >
+                {isLoading ? 'Отправка...' : t.submit} 
+                {!isLoading && <ChevronRight size={20} strokeWidth={3} />}
               </button>
             </form>
           </>
@@ -1317,24 +1352,42 @@ const App = () => {
         <div className="relative z-10">
           
           <section className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
-            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-yellow-600/10 rounded-full blur-[120px] animate-pulse-glow"></div>
-            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-blue-900/10 rounded-full blur-[150px]"></div>
+            {/* Фоновое изображение */}
+            <div 
+              className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: 'url(/images/bg/kortege_bg.jpg)',
+                backgroundPosition: 'center center',
+                backgroundSize: 'cover',
+                backgroundAttachment: 'fixed'
+              }}
+            />
+            
+            {/* Темный overlay для читаемости текста - адаптивный */}
+            <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/90 via-black/80 to-black/70 md:from-black/85 md:via-black/75 md:to-black/60"></div>
+            
+            {/* Плавный переход к следующей секции - увеличен для плавности */}
+            <div className="absolute bottom-0 left-0 right-0 h-40 md:h-32 bg-gradient-to-b from-transparent via-black/60 to-black z-[2] pointer-events-none"></div>
+            
+            {/* Декоративные элементы поверх overlay */}
+            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-yellow-600/5 rounded-full blur-[120px] animate-pulse-glow z-[2] pointer-events-none"></div>
+            <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-blue-900/5 rounded-full blur-[150px] z-[2] pointer-events-none"></div>
 
-            <div className="container mx-auto text-center relative pt-20">
-              <div className="inline-flex items-center gap-2 border border-yellow-500/30 bg-black/40 backdrop-blur-md px-6 py-2 rounded-full mb-8 animate-float">
+            <div className="container mx-auto text-center relative pt-20 z-10">
+              <div className="inline-flex items-center gap-2 border border-yellow-500/30 bg-black/60 backdrop-blur-md px-6 py-2 rounded-full mb-8 animate-float shadow-lg">
                 <div className="w-2 h-2 bg-yellow-500 rounded-full animate-ping"></div>
                 <span className="text-yellow-400 font-bold tracking-widest text-xs uppercase">{t.hero.badge}</span>
               </div>
               
-              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-white tracking-tighter leading-[0.85] mb-8 mix-blend-overlay opacity-90 select-none">
-                KOR<span className="text-yellow-500">TÉGE</span>
+              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black text-white tracking-tighter leading-[0.85] mb-8 select-none drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
+                KOR<span className="text-yellow-500 drop-shadow-[0_4px_20px_rgba(234,179,8,0.5)]">TÉGE</span>
               </h1>
               
-              <div className="text-3xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-tight mb-8">
+              <div className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-8 drop-shadow-[0_4px_15px_rgba(0,0,0,0.9)]">
                 {t.hero.subtitle}
               </div>
 
-              <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+              <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-12 font-light leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
                 {t.hero.desc}
               </p>
               
@@ -1346,9 +1399,9 @@ const App = () => {
               </div>
             </div>
 
-            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
-               <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-               <div className="w-px h-12 bg-gradient-to-b from-yellow-500 to-transparent"></div>
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 z-10">
+               <span className="text-[10px] uppercase tracking-[0.3em] text-white drop-shadow-lg">Scroll</span>
+               <div className="w-px h-12 bg-gradient-to-b from-yellow-500 to-transparent drop-shadow-lg"></div>
             </div>
           </section>
 
