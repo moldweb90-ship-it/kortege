@@ -1613,10 +1613,13 @@ const App = () => {
                     <a href="https://t.me/+37379975501" target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-[#0088cc] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
                       <Navigation size={28} />
                     </a>
+                    <a href="https://wa.me/37379975501" target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-[#25D366] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
+                      <MessageSquare size={28} />
+                    </a>
                     <a href="viber://chat?number=+37379975501" target="_blank" rel="noopener noreferrer" className="w-16 h-16 bg-[#665CAC] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
                       <MessageCircle size={28} />
                     </a>
-                    <a href="tel:+37379975501" className="w-16 h-16 bg-[#25D366] rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
+                    <a href="tel:+37379975501" className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-transform shadow-lg border border-white/10">
                       <Phone size={28} />
                     </a>
                  </div>
