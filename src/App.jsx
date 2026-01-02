@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Phone, MapPin, ChevronRight, ChevronLeft, ChevronDown, Star, Shield, CheckCircle, AlertTriangle, Menu, X, Globe, DollarSign, Play, Zap, Navigation, ArrowRight, MessageCircle, CreditCard, Bitcoin, Briefcase, Flame, ShieldCheck, Clock, CheckSquare, Car, FileText, Lock, Users, Award, Map } from 'lucide-react';
+import { Phone, MapPin, ChevronRight, ChevronLeft, ChevronDown, Star, Shield, CheckCircle, AlertTriangle, Menu, X, Globe, DollarSign, Play, Zap, Navigation, ArrowRight, MessageCircle, MessageSquare, CreditCard, Bitcoin, Briefcase, Flame, ShieldCheck, Clock, CheckSquare, Car, FileText, Lock, Users, Award, Map } from 'lucide-react';
 
 const styles = `
   @keyframes float {
